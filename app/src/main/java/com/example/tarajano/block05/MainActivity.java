@@ -20,19 +20,20 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         SharedPreferences preferences = getSharedPreferences("BGCOLOR_PREF", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-
+        final SharedPreferences.Editor editor = preferences.edit();
 
         final RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
-//        RadioButton radioButtonRed = (RadioButton) findViewById(R.id.radioButtonRed);
-//        RadioButton radioButtonBlue = (RadioButton) findViewById(R.id.radioButtonBlue);
-//        RadioButton radioButtonGreen = (RadioButton) findViewById(R.id.radioButtonGreen);
         final RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.relativeLayout);
+
+        if(preferences.contains("backgroundColorCode")){
+            relativeLayout.setBackgroundColor(preferences.getInt("backgroundColorCode", 0));
+        }
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
                 int colorCode = 0;
+
                 switch (checkedId) {
                     case R.id.radioButtonBlue:
                         colorCode = Color.BLUE;
@@ -46,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
 
                 }
                 relativeLayout.setBackgroundColor(colorCode);
+                editor.putInt("backgroundColorCode", colorCode);
+                editor.commit();
             }
         });
 
@@ -53,9 +56,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 relativeLayout.setBackgroundColor(Color.WHITE);
-//                RadioButton radioButton = (RadioButton) findViewById ( radioGroup.getCheckedRadioButtonId() );
-//                Log.e("selected button: ", radioButton.toString());
-//                radioButton.setSelected(false);
+                radioGroup.clearCheck();
             }
         });
 

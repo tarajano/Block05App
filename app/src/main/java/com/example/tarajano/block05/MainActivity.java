@@ -1,5 +1,7 @@
 package com.example.tarajano.block05;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +19,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        SharedPreferences preferences = getSharedPreferences("BGCOLOR_PREF", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+
+
         final RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
 //        RadioButton radioButtonRed = (RadioButton) findViewById(R.id.radioButtonRed);
 //        RadioButton radioButtonBlue = (RadioButton) findViewById(R.id.radioButtonBlue);
@@ -26,13 +32,20 @@ public class MainActivity extends AppCompatActivity {
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-                if(checkedId == R.id.radioButtonBlue){
-                    relativeLayout.setBackgroundColor(Color.BLUE);
-                } else if (checkedId == R.id.radioButtonGreen) {
-                    relativeLayout.setBackgroundColor(Color.GREEN);
-                } else {
-                    relativeLayout.setBackgroundColor(Color.RED);
+                int colorCode = 0;
+                switch (checkedId) {
+                    case R.id.radioButtonBlue:
+                        colorCode = Color.BLUE;
+                        break;
+                    case R.id.radioButtonGreen:
+                        colorCode = Color.GREEN;
+                        break;
+                    case R.id.radioButtonRed:
+                        colorCode = Color.RED;
+                        break;
+
                 }
+                relativeLayout.setBackgroundColor(colorCode);
             }
         });
 
